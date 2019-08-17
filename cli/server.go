@@ -5,6 +5,7 @@ import (
 	"github.com/urfave/cli"
 )
 
+// ServerCommand command for starting a web server
 func ServerCommand() cli.Command {
 	var port int
 	return cli.Command{

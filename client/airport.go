@@ -9,6 +9,7 @@ import (
 	"github.com/oleewere/cldnt/model"
 )
 
+// CalculateLocationFromIP get geo location data by using public ip
 func CalculateLocationFromIP() (*model.Location, error) {
 	res, _ := http.Get("https://api.ipify.org")
 	ip, _ := ioutil.ReadAll(res.Body)
@@ -24,11 +25,12 @@ func CalculateLocationFromIP() (*model.Location, error) {
 	return &model.Location{Latitude: geoMap["lat"].(float64), Longitude: geoMap["lon"].(float64)}, nil
 }
 
+// ListAirportsByDistance list airports based geo location distance
 func ListAirportsByDistance(location model.Location, rows int, airportSearchUrl string) ([]model.Airport, error) {
 	rangeValue := model.RangeValue{RangeStart: "0", RangeEnd: "90"}
 	fieldQuery := model.FieldQuery{FieldName: "lat", RangeValue: &rangeValue}
 
-	query := model.CreateQuery(fieldQuery.ToQueryString(), rows)
+	query := model.CreateQuery(fieldQuery.ToQueryString())
 	query.AddDistanceSort(&location)
 	query.AddLimit(rows)
 

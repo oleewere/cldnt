@@ -5,7 +5,8 @@ import (
 	"net/url"
 )
 
-func CreateQuery(fieldsQueryExpression string, rows int) *Query {
+// CreateQuery create query from fields expression
+func CreateQuery(fieldsQueryExpression string) *Query {
 	params := url.Values{}
 	queryString := "*:*"
 	if len(fieldsQueryExpression) > 0 {
@@ -16,14 +17,17 @@ func CreateQuery(fieldsQueryExpression string, rows int) *Query {
 	return &query
 }
 
+// AddDistanceSort extend query with distance sorting
 func (q *Query) AddDistanceSort(location *Location) {
 	q.Params.Add("sort", fmt.Sprintf("\"<distance,lon,lat,%f,%f,km>\"", location.Longitude, location.Latitude))
 }
 
+// AddLimit extend query with row limits
 func (q *Query) AddLimit(rows int) {
 	q.Params.Add("limit", fmt.Sprintf("%d", rows))
 }
 
+// ToQueryString generate a string from a field query object
 func (f *FieldQuery) ToQueryString() string {
 	var result string
 	if f.RangeValue != nil {
@@ -36,14 +40,17 @@ func (f *FieldQuery) ToQueryString() string {
 	return result
 }
 
+// And provide 'and' logical expression for field query
 func (f *FieldQuery) And(field *FieldQuery) string {
 	return fmt.Sprintf("[%v AND %v]", f.ToQueryString(), field.ToQueryString())
 }
 
+// Or provide 'or' logical expression for field query
 func (f *FieldQuery) Or(field *FieldQuery) string {
 	return fmt.Sprintf("[%v OR %v]", f.ToQueryString(), field.ToQueryString())
 }
 
+// Negate provide 'negate' logical expression for field query
 func (f *FieldQuery) Negate() string {
 	return fmt.Sprintf("NOT %v", f.ToQueryString())
 }

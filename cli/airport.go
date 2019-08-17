@@ -13,6 +13,7 @@ import (
 	"github.com/urfave/cli"
 )
 
+// ListAirportsCommand list airports by distance (in table or JSON format)
 func ListAirportsCommand() cli.Command {
 	var airportSearchUrl string
 	var rows int

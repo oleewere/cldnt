@@ -6,6 +6,7 @@ import (
 	"github.com/oleewere/cldnt/model"
 )
 
+// ConvertToAirports converts bytes response to airport objects
 func ConvertToAirports(bytesResponse []byte) ([]model.Airport, error) {
 	airports := make([]model.Airport, 0)
 	var airportResponse map[string]interface{}

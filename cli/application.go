@@ -7,6 +7,7 @@ import (
 	"github.com/urfave/cli"
 )
 
+// StartApplication holder of cli commands, can start cli application
 func StartApplication(version string, gitRevString string) {
 	app := cli.NewApp()
 	app.Name = "cldnt"
