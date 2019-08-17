@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
 	"strconv"
@@ -14,6 +16,7 @@ import (
 func ListAirportsCommand() cli.Command {
 	var airportSearchUrl string
 	var rows int
+	var output string
 	return cli.Command{
 		Name:  "airports",
 		Usage: "Get closest airports",
@@ -44,18 +47,28 @@ func ListAirportsCommand() cli.Command {
 				fmt.Println(errAirp)
 				os.Exit(1)
 			}
-			var tableData [][]string
-			for _, airport := range airports {
-				tableData = append(tableData, []string{airport.Name, fmt.Sprintf("%f", airport.Location.Latitude), fmt.Sprintf("%f", airport.Location.Longitude)})
+			if output == "json" {
+				jsonAirportResp, jsonAirportRespErr := json.Marshal(airports)
+				if jsonAirportRespErr != nil {
+					fmt.Println(jsonAirportRespErr)
+					os.Exit(1)
+				}
+				printJson(jsonAirportResp)
+			} else {
+				var tableData [][]string
+				for _, airport := range airports {
+					tableData = append(tableData, []string{airport.Name, fmt.Sprintf("%f", airport.Location.Latitude), fmt.Sprintf("%f", airport.Location.Longitude)})
+				}
+				tableTitle := fmt.Sprintf("NEAREST AIRPORTS: (lat: %f, lon: %f)", location.Latitude, location.Longitude)
+				printTable(tableTitle, []string{"NAME", "LATITUDE", "LONGITUDE"}, tableData)
 			}
-			tableTitle := fmt.Sprintf("NEAREST AIRPORTS: (lat: %f, lon: %f)", location.Latitude, location.Longitude)
-			printTable(tableTitle, []string{"NAME", "LATITUDE", "LONGITUDE"}, tableData)
 			return nil
 		},
 		Flags: []cli.Flag{
 			cli.StringFlag{Name: "airport-db-search-url, a", Usage: "Search URL for airport DB", Value: "https://mikerhodes.cloudant.com/airportdb/_design/view1/_search/geo", Destination: &airportSearchUrl},
 			cli.StringFlag{Name: "latitude, la", Usage: "Latitude parameter for calculating nearest airports"},
 			cli.StringFlag{Name: "longitude, lo", Usage: "Longitude parameter for calculating nearest airports"},
+			cli.StringFlag{Name: "output, o", Usage: "Output type (json or table)", Value: "table", Destination: &output},
 			cli.IntFlag{Name: "rows, r", Usage: "Maximum number of rows to show.", Value: 10, Destination: &rows},
 		},
 	}
@@ -77,4 +90,18 @@ func printTable(title string, headers []string, data [][]string) {
 		fmt.Println()
 		fmt.Println("NO ENTRIES FOUND!")
 	}
+}
+
+func printJson(b []byte) {
+	fmt.Println(formatJson(b).String())
+}
+
+func formatJson(b []byte) *bytes.Buffer {
+	var out bytes.Buffer
+	err := json.Indent(&out, b, "", "    ")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	return &out
 }
