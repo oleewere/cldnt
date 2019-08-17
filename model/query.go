@@ -5,7 +5,7 @@ import (
 	"net/url"
 )
 
-func CreateQuery(fieldsQueryExpression string) *Query {
+func CreateQuery(fieldsQueryExpression string, rows int) *Query {
 	params := url.Values{}
 	queryString := "*:*"
 	if len(fieldsQueryExpression) > 0 {
@@ -20,11 +20,15 @@ func (q *Query) AddDistanceSort(location *Location) {
 	q.Params.Add("sort", fmt.Sprintf("\"<distance,lon,lat,%f,%f,km>\"", location.Longitude, location.Latitude))
 }
 
+func (q *Query) AddLimit(rows int) {
+	q.Params.Add("limit", fmt.Sprintf("%d", rows))
+}
+
 func (f *FieldQuery) ToQueryString() string {
 	var result string
 	if f.RangeValue != nil {
 		rangeStartValue := f.RangeValue.RangeStart
-		rangeEndValue := f.RangeValue.RangeStart
+		rangeEndValue := f.RangeValue.RangeEnd
 		result = fmt.Sprintf("%v:[%v TO %v]", f.FieldName, wildardIfEmpty(rangeStartValue), wildardIfEmpty(rangeEndValue))
 	} else if f.SimpleValue != nil {
 		result = fmt.Sprintf("%v:%v", f.FieldName, wildardIfEmpty(f.SimpleValue.Value))

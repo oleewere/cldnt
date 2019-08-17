@@ -19,12 +19,30 @@ func CalculateLocationFromIP() (*model.Location, error) {
 	geoMap := make(map[string]interface{})
 	jsonErr := json.Unmarshal(locationResponse, &geoMap)
 	if jsonErr != nil {
-		fmt.Println(jsonErr)
 		return nil, jsonErr
 	}
 	return &model.Location{Latitude: geoMap["lat"].(float64), Longitude: geoMap["lon"].(float64)}, nil
 }
 
-func ListAirportsByDistance(*model.Location) []model.Airport {
-	return nil
+func ListAirportsByDistance(location model.Location, rows int, airportSearchUrl string) ([]model.Airport, error) {
+	rangeValue := model.RangeValue{RangeStart: "0", RangeEnd: "90"}
+	fieldQuery := model.FieldQuery{FieldName: "lat", RangeValue: &rangeValue}
+
+	query := model.CreateQuery(fieldQuery.ToQueryString(), rows)
+	query.AddDistanceSort(&location)
+	query.AddLimit(rows)
+
+	request, err := CreateGetRequest(*query.Params, airportSearchUrl)
+	if err != nil {
+		return nil, err
+	}
+	byteResponse, processErr := ProcessRequest(request)
+	if processErr != nil {
+		return nil, processErr
+	}
+	result, convertRespErr := ConvertToAirports(byteResponse)
+	if convertRespErr != nil {
+		return nil, convertRespErr
+	}
+	return result, nil
 }
