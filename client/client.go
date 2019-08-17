@@ -10,7 +10,7 @@ import (
 )
 
 // GetAirPortDbSearchUri gat airport db search url, use a default one if does not exist
-func GetAirPortDbSeearchUri(airportDbUrl string) string {
+func GetAirPortDbSearchUri(airportDbUrl string) string {
 	if len(airportDbUrl) > 0 {
 		return airportDbUrl
 	}
@@ -19,7 +19,7 @@ func GetAirPortDbSeearchUri(airportDbUrl string) string {
 
 // CreateGetRequest creates an AirportDB GET request
 func CreateGetRequest(params url.Values, airportDbUrl string) (*http.Request, error) {
-	uri := GetAirPortDbSeearchUri(airportDbUrl)
+	uri := GetAirPortDbSearchUri(airportDbUrl)
 	if len(params) > 0 {
 		uri = fmt.Sprintf("%v?%v", uri, params.Encode())
 	}

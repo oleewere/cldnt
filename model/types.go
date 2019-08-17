@@ -31,7 +31,7 @@ type Location struct {
 	Latitude  float64
 }
 
-// Location holds airport data (name + location)
+// Airport holds airport data (name + location)
 type Airport struct {
 	Name     string
 	Location *Location
