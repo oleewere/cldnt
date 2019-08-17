@@ -22,13 +22,13 @@ brew install cldnt
 
 Using wget:
 ```bash
-CLDNT_VERSION=0.5.0
+CLDNT_VERSION=0.1.0
 wget -qO- "https://github.com/oleewere/cldnt/releases/download/v${CLDNT_VERSION}/cldnt_${CLDNT_VERSION}_linux_64-bit.tar.gz" | tar -C /usr/bin -zxv cldntl
 ```
 
 Using curl:
 ```bash
-CLDNT_VERSION=0.5.0
+CLDNT_VERSION=0.1.0
 curl -L -s "https://github.com/oleewere/cldnt/releases/download/v${CLDNT_VERSION}/cldnt_${CLDNT_VERSION}_linux_64-bit.tar.gz" | tar -C /usr/bin -xzv cldnt
 ```
 
@@ -57,7 +57,7 @@ cldnt --help
 
 Run in docker container (if it has already built)
 
-``bash
+```bash
 docker run --rm oleewere/cldnt:latest --help
 ```
 
