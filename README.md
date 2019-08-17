@@ -68,5 +68,6 @@ Currently only airports command is supported:
 cldnt help airports
 # using it:
 cldnt airports
+# note: if latitude and longitude is not provided, the app will try to calculate those details by the public IP
 ```
 
