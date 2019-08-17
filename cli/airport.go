@@ -11,7 +11,7 @@ import (
 func ListAirportsCommand() cli.Command {
 	var airportSearchUrl string
 	return cli.Command{
-		Name:  "airport",
+		Name:  "airports",
 		Usage: "Get closest airports",
 		Action: func(c *cli.Context) error {
 			if len(c.String("la")) > 0 && len(c.String("lo")) > 0 {
