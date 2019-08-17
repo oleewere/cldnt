@@ -31,14 +31,17 @@ type Location struct {
 	Latitude  float64 `json:"lon,omitempty"`
 }
 
+// AirportResponse response from airport db
 type AirportResponse struct {
 	Airports []Airport `json:"rows,omitempty"`
 }
 
+// Airport holds airport related record - only "fields" is required from it right now
 type Airport struct {
 	AirportFields AirportFields `json:"fields,omitempty"`
 }
 
+// AirportFields holds airport fields (name + geo location)
 type AirportFields struct {
 	Name string `json:"name,omitempty"`
 	Location
