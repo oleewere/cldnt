@@ -26,9 +26,10 @@ func ListAirportsCommand() cli.Command {
 		},
 		Flags: []cli.Flag{
 			cli.StringFlag{Name: "airport-db-search-url, a", Usage: "Search URL for airport DB", Value: "https://mikerhodes.cloudant.com/airportdb/_design/view1/_search/geo", Destination: &airportSearchUrl},
-			cli.StringFlag{Name: "latitude, la", Usage: "Latitude parameter for calculating nearest airport"},
-			cli.StringFlag{Name: "longitude, lo", Usage: "Longitude parameter for calculating nearest airport"},
+			cli.StringFlag{Name: "latitude, la", Usage: "Latitude parameter for calculating nearest airports"},
+			cli.StringFlag{Name: "longitude, lo", Usage: "Longitude parameter for calculating nearest airports"},
 			cli.BoolFlag{Name: "use-ip-address, ip", Usage: "Use IP address to calculate latitude and longitude"},
+			cli.IntFlag{Name: "rows, r", Usage: "Maximum number of rows to show."},
 		},
 	}
 }
