@@ -27,12 +27,19 @@ type SimpleValue struct {
 
 // Location holds position (geo location) data
 type Location struct {
-	Longitude float64
-	Latitude  float64
+	Longitude float64 `json:"lat,omitempty"`
+	Latitude  float64 `json:"lon,omitempty"`
 }
 
-// Airport holds airport data (name + location)
+type AirportResponse struct {
+	Airports []Airport `json:"rows,omitempty"`
+}
+
 type Airport struct {
-	Name     string
-	Location *Location
+	AirportFields AirportFields `json:"fields,omitempty"`
+}
+
+type AirportFields struct {
+	Name string `json:"name,omitempty"`
+	Location
 }

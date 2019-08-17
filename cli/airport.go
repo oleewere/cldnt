@@ -57,8 +57,10 @@ func ListAirportsCommand() cli.Command {
 				printJson(jsonAirportResp)
 			} else {
 				var tableData [][]string
-				for _, airport := range airports {
-					tableData = append(tableData, []string{airport.Name, fmt.Sprintf("%f", airport.Location.Latitude), fmt.Sprintf("%f", airport.Location.Longitude)})
+				if airports != nil {
+					for _, airport := range airports {
+						tableData = append(tableData, []string{airport.AirportFields.Name, fmt.Sprintf("%f", airport.AirportFields.Latitude), fmt.Sprintf("%f", airport.AirportFields.Longitude)})
+					}
 				}
 				tableTitle := fmt.Sprintf("NEAREST AIRPORTS: (lat: %f, lon: %f)", location.Latitude, location.Longitude)
 				printTable(tableTitle, []string{"NAME", "LATITUDE", "LONGITUDE"}, tableData)

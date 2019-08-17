@@ -42,9 +42,11 @@ func ListAirportsByDistance(location model.Location, rows int, airportSearchUrl 
 	if processErr != nil {
 		return nil, processErr
 	}
-	result, convertRespErr := ConvertToAirports(byteResponse)
-	if convertRespErr != nil {
-		return nil, convertRespErr
+	var airportResponse model.AirportResponse
+	jsonErr := json.Unmarshal(byteResponse, &airportResponse)
+	if jsonErr != nil {
+		return nil, jsonErr
 	}
-	return result, nil
+
+	return airportResponse.Airports, nil
 }
