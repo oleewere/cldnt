@@ -10,7 +10,7 @@ import (
 func StartApplication(version string, gitRevString string) {
 	app := cli.NewApp()
 	app.Name = "cldnt"
-	app.Usage = "Tool to get the closest airport"
+	app.Usage = "Tool to get the closest airports"
 	app.EnableBashCompletion = true
 	app.UsageText = "cldnt command [command options] [arguments...]"
 	if len(version) > 0 {
