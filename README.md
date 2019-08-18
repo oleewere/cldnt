@@ -1,6 +1,6 @@
 # cldnt
 
-[![GoDoc Widget](https://godoc.org/github.com/oleewere/cldnt?status.svg)](https://godoc.org/github.com/oleewere/cldnt/client)
+[![GoDoc Widget](https://godoc.org/github.com/oleewere/cldnt?status.svg)](https://godoc.org/github.com/oleewere/cldnt)
 [![Build Status](https://travis-ci.org/oleewere/cldnt.svg?branch=master)](https://travis-ci.org/oleewere/cldnt)
 [![Go Report Card](https://goreportcard.com/badge/github.com/oleewere/cldnt)](https://goreportcard.com/report/github.com/oleewere/cldnt)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
