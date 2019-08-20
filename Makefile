@@ -15,9 +15,9 @@ else
 	VERSION_FOR_BUILD=$(shell git name-rev --tags --name-only $(shell git rev-parse HEAD) | sed 's/\^.*$///')
 endif
 
-build: packr build
+build: packr go-build
 
-install: packr install
+install: packr go-install
 
 all: packr-install
 
