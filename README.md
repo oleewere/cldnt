@@ -71,3 +71,9 @@ cldnt airports
 # note: if latitude and longitude is not provided, the app will try to calculate those details by the public IP
 ```
 
+Start web server with UI:
+
+```bash
+# It will start a web application on port 7777, checkout "localhost:7777"
+cldnt serve
+```
