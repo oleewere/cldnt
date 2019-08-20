@@ -27,6 +27,7 @@ func StartApplication(version string, gitRevString string) {
 	app.Copyright = "Copyright 2019 Oliver Mihaly Szabo"
 	app.Commands = []cli.Command{}
 	app.Commands = append(app.Commands, ListAirportsCommand())
+	app.Commands = append(app.Commands, ServerCommand())
 	err := app.Run(os.Args)
 	if err != nil {
 		fmt.Println(err)
