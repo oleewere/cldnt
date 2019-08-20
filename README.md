@@ -76,4 +76,6 @@ Start web server with UI:
 ```bash
 # It will start a web application on port 7777, checkout "localhost:7777"
 cldnt serve
+# or with docker command:
+docker run --rm -p 7777:7777 oleewere/cldnt:latest serve
 ```
