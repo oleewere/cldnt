@@ -29,7 +29,7 @@ func PingHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"ok": true})
 }
 
-// AitportsHandler get closest airports
+// AirportsHandler get closest airports
 func AirportsHandler(w http.ResponseWriter, r *http.Request) {
 	lat := r.FormValue("lat")
 	lon := r.FormValue("lon")
