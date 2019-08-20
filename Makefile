@@ -15,10 +15,16 @@ else
 	VERSION_FOR_BUILD=$(shell git name-rev --tags --name-only $(shell git rev-parse HEAD) | sed 's/\^.*$///')
 endif
 
-build:
+build: packr build
+
+install: packr install
+
+all: packr-install
+
+go-build:
 	go build -ldflags "-X main.GitRevString=$(GIT_REV_SHORT) -X main.Version=$(VERSION_FOR_BUILD)" -o cldnt
 
-install:
+go-install:
 	go install -ldflags "-X main.GitRevString=$(GIT_REV_SHORT) -X main.Version=$(VERSION_FOR_BUILD)"
 
 deps:
@@ -26,12 +32,6 @@ deps:
 
 packr: deps
 	packr -v
-
-packr-build: packr build
-
-packr-install: packr install
-
-all: packr-install
 
 clean:
 	rm -rf dist
