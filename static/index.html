@@ -1,1 +1,84 @@
-hello
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <title>CLDNT Airport Client</title>
+  <script type="text/javascript"
+          src="https://maps.googleapis.com/maps/api/js?key="></script>
+  <script src="https://unpkg.com/location-picker/dist/location-picker.min.js"></script>
+  <style type="text/css">
+    #map {
+      width: 100%;
+      height: 480px;
+    }
+  </style>
+</head>
+
+<body>
+<div id="map"></div>
+<br>
+<button id="confirmPosition">Confirm Position</button>
+<br>
+<br>
+<p>On idle position: <span id="onIdlePositionView"></span></p>
+<p>On click position: <span id="onClickPositionView"></span></p>
+<p>Number of airports to show: <input id="rows_number" type="number" value="10" max="200" min="1"></input> (min: 1, max: 200)</p>
+<script>
+  var confirmBtn = document.getElementById('confirmPosition');
+  var onClickPositionView = document.getElementById('onClickPositionView');
+  var onIdlePositionView = document.getElementById('onIdlePositionView');
+  var lp = new locationPicker('map', {
+    setCurrentPosition: true,
+  }, {
+    zoom: 15
+  });
+  confirmBtn.onclick = function () {
+    var location = lp.getMarkerPosition();
+    onClickPositionView.innerHTML = 'The chosen location is ' + location.lat + ', ' + location.lng;
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        $("#airportBody").empty();
+        var airports = JSON.parse(this.responseText);
+        for (var i = 0; i < airports.length; i++) {
+            newNameData = "<td>" + airports[i].fields["name"] + "</td>"
+            latData = airports[i].fields["lat"]
+            lonData = airports[i].fields["lon"]
+            GMlink = "http://www.google.com/maps/place/" + latData + "," + lonData
+            newGMData = "<td><a href='" + GMlink  + "'>" + GMlink + "</a></td>"
+            data = newNameData + newGMData
+            newLine = "<tr>" + data + "<tr>"
+            $("#airportBody").append(newLine)
+        }
+      }
+    };
+    var rows = $("#rows_number").val()
+    var params = 'lat=' + location.lat + '&lon=' + location.lng + "&rows=" + rows
+    xhttp.open("GET", "/airports?" + params, true);
+    xhttp.send();
+
+  };
+  google.maps.event.addListener(lp.map, 'idle', function (event) {
+    var location = lp.getMarkerPosition();
+    onIdlePositionView.innerHTML = 'The chosen location is ' + location.lat + ', ' + location.lng;
+  });
+</script>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Airport Name</th>
+            <th scope="col">GoogleMaps Link</th>
+        </tr>
+    </thead>
+    <tbody id="airportBody">
+    </tbody>
+</table>
+</div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
