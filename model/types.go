@@ -27,8 +27,8 @@ type SimpleValue struct {
 
 // Location holds position (geo location) data
 type Location struct {
-	Longitude float64 `json:"lat,omitempty"`
-	Latitude  float64 `json:"lon,omitempty"`
+	Latitude  float64 `json:"lat,omitempty"`
+	Longitude float64 `json:"lon,omitempty"`
 }
 
 // AirportResponse response from airport db

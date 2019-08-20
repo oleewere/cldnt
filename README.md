@@ -69,6 +69,8 @@ cldnt help airports
 # using it:
 cldnt airports
 # note: if latitude and longitude is not provided, the app will try to calculate those details by the public IP
+# of course you can provide those parameters
+cldnt airports --longitude 19.255592 --latitude 47.436933 --rows 5
 ```
 
 Start web server with UI:
