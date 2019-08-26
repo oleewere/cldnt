@@ -56,7 +56,7 @@ func AirportsHandler(w http.ResponseWriter, r *http.Request) {
 		location = model.Location{Latitude: latutide, Longitude: longitude}
 	}
 	log.Println(fmt.Sprintf("Inputs - rows: %d - latitude: %f - longitue: %f", rows, location.Latitude, location.Longitude))
-	airports, errAirp := client.ListAirportsByDistance(location, rows, "")
+	airports, errAirp := client.ListAirportsByDistance(&client.AirportClient{}, location, rows, "")
 	log.Println(fmt.Sprintf("Airports response: %v", airports))
 	handleError(errAirp, w)
 	json.NewEncoder(w).Encode(airports)

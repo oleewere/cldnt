@@ -18,13 +18,19 @@ func CreateQuery(fieldsQueryExpression string) *Query {
 }
 
 // AddDistanceSort extend query with distance sorting
-func (q *Query) AddDistanceSort(location *Location) {
-	q.Params.Add("sort", fmt.Sprintf("\"<distance,lon,lat,%f,%f,km>\"", location.Longitude, location.Latitude))
+func (q *Query) AddDistanceSort(location *Location) *Query {
+	if location != nil && q.Params != nil {
+		q.Params.Add("sort", fmt.Sprintf("\"<distance,lon,lat,%f,%f,km>\"", location.Longitude, location.Latitude))
+	}
+	return q
 }
 
 // AddLimit extend query with row limits
-func (q *Query) AddLimit(rows int) {
-	q.Params.Add("limit", fmt.Sprintf("%d", rows))
+func (q *Query) AddLimit(rows int) *Query {
+	if q.Params != nil {
+		q.Params.Add("limit", fmt.Sprintf("%d", rows))
+	}
+	return q
 }
 
 // ToQueryString generate a string from a field query object
@@ -42,16 +48,44 @@ func (f *FieldQuery) ToQueryString() string {
 
 // And provide 'and' logical expression for field query
 func (f *FieldQuery) And(field *FieldQuery) string {
+	if field == nil {
+		return f.ToQueryString()
+	}
+	fQuery := f.ToQueryString()
+	inputFQuery := field.ToQueryString()
+	if len(inputFQuery) == 0 {
+		return f.ToQueryString()
+	}
+	if len(fQuery) == 0 {
+		return field.ToQueryString()
+	}
 	return fmt.Sprintf("[%v AND %v]", f.ToQueryString(), field.ToQueryString())
 }
 
 // Or provide 'or' logical expression for field query
 func (f *FieldQuery) Or(field *FieldQuery) string {
+	if field == nil {
+		return f.ToQueryString()
+	}
+	fQuery := f.ToQueryString()
+	inputFQuery := field.ToQueryString()
+	if len(inputFQuery) == 0 {
+		return f.ToQueryString()
+	}
+	if len(fQuery) == 0 {
+		return field.ToQueryString()
+	}
 	return fmt.Sprintf("[%v OR %v]", f.ToQueryString(), field.ToQueryString())
 }
 
 // Negate provide 'negate' logical expression for field query
 func (f *FieldQuery) Negate() string {
+	if len(f.FieldName) == 0 {
+		return f.ToQueryString()
+	}
+	if f.RangeValue == nil && f.SimpleValue == nil {
+		f.SimpleValue = &SimpleValue{}
+	}
 	return fmt.Sprintf("NOT %v", f.ToQueryString())
 }
 

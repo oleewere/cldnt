@@ -19,7 +19,7 @@ build: packr go-build
 
 install: packr go-install
 
-all: install
+all: test install
 
 go-build:
 	go build -ldflags "-X main.GitRevString=$(GIT_REV_SHORT) -X main.Version=$(VERSION_FOR_BUILD)" -o cldnt
@@ -38,6 +38,9 @@ clean:
 
 run:
 	go run main.go
+
+test:
+	go test -v ./...
 
 last-release:
 	@echo "Last release version: $(LAST_RELEASE)"

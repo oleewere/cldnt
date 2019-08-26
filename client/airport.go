@@ -26,7 +26,7 @@ func CalculateLocationFromIP() (*model.Location, error) {
 }
 
 // ListAirportsByDistance list airports based geo location distance
-func ListAirportsByDistance(location model.Location, rows int, airportSearchUrl string) ([]model.Airport, error) {
+func ListAirportsByDistance(client Client, location model.Location, rows int, airportSearchUrl string) ([]model.Airport, error) {
 	rangeValue := model.RangeValue{RangeStart: "0", RangeEnd: "90"}
 	fieldQuery := model.FieldQuery{FieldName: "lat", RangeValue: &rangeValue}
 
@@ -38,7 +38,7 @@ func ListAirportsByDistance(location model.Location, rows int, airportSearchUrl 
 	if err != nil {
 		return nil, err
 	}
-	byteResponse, processErr := ProcessRequest(request)
+	byteResponse, processErr := client.ProcessRequest(request)
 	if processErr != nil {
 		return nil, processErr
 	}

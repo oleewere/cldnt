@@ -43,7 +43,7 @@ func ListAirportsCommand() cli.Command {
 				}
 				location = *lotLatPair
 			}
-			airports, errAirp := client.ListAirportsByDistance(location, rows, airportSearchUrl)
+			airports, errAirp := client.ListAirportsByDistance(&client.AirportClient{}, location, rows, airportSearchUrl)
 			if errAirp != nil {
 				fmt.Println(errAirp)
 				os.Exit(1)

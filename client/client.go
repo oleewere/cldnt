@@ -9,6 +9,37 @@ import (
 	"time"
 )
 
+// Client interface that holds http operations for communicationg with airport db
+type Client interface {
+	ProcessRequest(*http.Request) ([]byte, error)
+}
+
+// AirportClient type that implements Client interface
+type AirportClient struct {
+}
+
+// ProcessRequest get a simple response from a REST call
+func (a *AirportClient) ProcessRequest(request *http.Request) ([]byte, error) {
+	client := GetHttpClient()
+	response, err := client.Do(request)
+	if err != nil {
+		return nil, err
+	}
+	defer response.Body.Close()
+	if response.StatusCode >= 400 {
+		bodyBytes, err := ioutil.ReadAll(response.Body)
+		if err != nil {
+			return nil, err
+		}
+		return bodyBytes, err
+	}
+	bodyBytes, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+	return bodyBytes, nil
+}
+
 // GetAirPortDbSearchUri gat airport db search url, use a default one if does not exist
 func GetAirPortDbSearchUri(airportDbUrl string) string {
 	if len(airportDbUrl) > 0 {
@@ -44,26 +75,4 @@ func GetHttpClient() *http.Client {
 		},
 	}
 	return httpClient
-}
-
-// ProcessRequest get a simple response from a REST call
-func ProcessRequest(request *http.Request) ([]byte, error) {
-	client := GetHttpClient()
-	response, err := client.Do(request)
-	if err != nil {
-		return nil, err
-	}
-	defer response.Body.Close()
-	if response.StatusCode >= 400 {
-		bodyBytes, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			return nil, err
-		}
-		return bodyBytes, err
-	}
-	bodyBytes, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return nil, err
-	}
-	return bodyBytes, nil
 }
